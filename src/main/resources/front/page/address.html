@@ -145,12 +145,10 @@
                     },
                     itemClick(item){
                         const url = document.referrer
-
                         //表示是从订单页面跳转过来的
                         if(url.includes('order')){
                             this.setDefaultAddress(item)
-                            window.location.href=url
-                            /*history.go(-1)*/
+                            history.go(-1)
                         }
                     }
 

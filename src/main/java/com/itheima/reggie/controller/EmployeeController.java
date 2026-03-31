@@ -1,16 +1,15 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -55,5 +54,26 @@ public class EmployeeController {
         //使用session的invalidate()卷除session所有的key
         session.invalidate();
         return R.success("退出成功");
+    }
+
+    //员工分页查询
+    //一级路径：emplouyee 二级：page 方法：get
+    //参数是表单参数：page,pageSize,name
+    //分页有两步：注册mybatisplus的分页器；进行分页查询
+    @GetMapping("/page")
+    public R page(Integer page,Integer pageSize,String name){
+        //构造分页构造器
+        Page pageInfo=new Page(page,pageSize);
+        //构造条件构造器
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        //添加过滤条件
+        queryWrapper.like(!StringUtils.isEmpty(name),Employee::getName,name);
+        //添加排序条件
+        queryWrapper.orderByDesc(Employee::getUpdateTime);
+        //执行带条件的分页查询：会执行两条查询——一个查询页，一个查询总数
+        //会保存到pageinfo
+        employeeService.page(pageInfo,queryWrapper);
+
+        return R.success(pageInfo);
     }
 }
