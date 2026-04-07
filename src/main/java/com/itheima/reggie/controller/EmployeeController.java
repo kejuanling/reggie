@@ -124,9 +124,12 @@ public class EmployeeController {
     public R<String> update(@RequestBody Employee employee,HttpSession session){
         //1.修改上传时间和修改人员
         employee.setUpdateTime(LocalDateTime.now());
+        //2.获取员工id
         Long userid =(Long) session.getAttribute("employee");
         employee.setUpdateUser(userid);
+        //3.更新员工信息
         employeeService.updateById(employee);
+
         return R.success("修改成功");
     }
 
