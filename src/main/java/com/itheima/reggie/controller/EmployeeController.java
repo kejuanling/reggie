@@ -89,12 +89,12 @@ public class EmployeeController {
         //1.设置员工状态
         employee.setStatus(1);
         //2.设置创建和更新时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
         //3.获取员工id
         Long userId = (Long) session.getAttribute("employee");
-        employee.setCreateUser(userId);
-        employee.setUpdateUser(userId);
+//        employee.setCreateUser(userId);
+//        employee.setUpdateUser(userId);
         //4.设置密码
         String password=DigestUtils.md5DigestAsHex("000000".getBytes());
         employee.setPassword(password);
@@ -122,11 +122,14 @@ public class EmployeeController {
      */
     @PutMapping
     public R<String> update(@RequestBody Employee employee,HttpSession session){
+        if(employee.getId()==1){
+            return R.error("管理员账号不能禁用");
+        }
         //1.修改上传时间和修改人员
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
         //2.获取员工id
-        Long userid =(Long) session.getAttribute("employee");
-        employee.setUpdateUser(userid);
+//        Long userid =(Long) session.getAttribute("employee");
+//        employee.setUpdateUser(userid);
         //3.更新员工信息
         employeeService.updateById(employee);
 
