@@ -181,30 +181,36 @@
         <div>
         </div>
         <div>
-          <el-form-item
-            label="菜品图片:"
-            prop="region"
-            class="uploadImg"
-          >
+          <el-form-item label="菜品图片:" prop="region" class="uploadImg">
             <el-upload
-              class="avatar-uploader"
-              action="/common/upload"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :on-change="onChange"
-              ref="upload"
+                    class="avatar-uploader"
+                    action="/common/upload"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
             >
-              <img
-                v-if="imageUrl"
-                :src="imageUrl"
-                class="avatar"
-              ></img>
-              <i
-                v-else
-                class="el-icon-plus avatar-uploader-icon"
-              ></i>
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
+
+          <script>
+            export default {
+              data() {
+                return {
+                  imageUrl: "", // 必须有！
+                  form: {}
+                };
+              },
+              methods: {
+                // 上传成功
+                handleAvatarSuccess(res) {
+                  console.log("后端返回：", res);
+                  this.imageUrl = "/common/download?name=" + res.data;
+                  console.log("图片地址：", this.imageUrl);
+                }
+              }
+            };
+          </script>
         </div>
         <div class="address">
           <el-form-item

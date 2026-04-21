@@ -1,18 +1,28 @@
+# 服务器配置
 server:
-  port: 8080
+  port: 8080  # 项目启动端口，浏览器访问：http://localhost:8080
+
+# Spring 核心配置
 spring:
   application:
-    name: reggie
+    name: reggie  # 应用名称（微服务/日志中标识项目）
   datasource:
     druid:
+      # MySQL 8.x 驱动（必须带 cj）
       driver-class-name: com.mysql.cj.jdbc.Driver
+      # 数据库连接地址
       url: jdbc:mysql://localhost:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: root
-      password: 123456
+      username: root  # 数据库账号
+      password: 123456  # 数据库密码
+
+# MyBatis-Plus 配置
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true  # 开启数据库下划线 → Java驼峰命名自动映射
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 控制台打印执行的SQL语句
   global-config:
     db-config:
-      id-type: assign_id
+      id-type: assign_id  # 主键生成策略：由程序分配ID（雪花算法）
+
+# 自定义配置：文件上传保存路径
+imgpath: f:\.23053131\img

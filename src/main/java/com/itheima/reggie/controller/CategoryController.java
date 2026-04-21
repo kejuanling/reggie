@@ -6,10 +6,12 @@ import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
+import java.util.List;
 
 @RestController
 @RequestMapping("/category")
@@ -47,5 +49,20 @@ public class CategoryController {
         categoryService.deleteByCategoryId(id);
         return R.success("删除成功");
     }
+    //一级路径Category，二级路径List,参数是表单参数Integer
+    @GetMapping("/list")
+    public R<List<Category>> list(Integer type){
+        //查询分类
+        //1.创建查询对象
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        //2.创建条件
+        queryWrapper.eq(Category::getType,type);
+        //3.执行查询
+        List<Category> list = categoryService.list(queryWrapper);
+
+        return R.success(list);
+    }
+
+
 
 }
