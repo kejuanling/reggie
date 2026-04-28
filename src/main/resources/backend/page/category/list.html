@@ -92,6 +92,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="counts"
         @size-change="handleSizeChange"
+        :current-page.sync="page"
         @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
