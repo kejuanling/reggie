@@ -8,13 +8,12 @@ import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.entity.Dish;
 import com.itheima.reggie.service.CategoryService;
+import com.itheima.reggie.service.DishFlavorService;
 import com.itheima.reggie.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,4 +66,11 @@ public class DishController {
         dishDtoPage.setRecords(dishDtoList);
         return R.success(dishDtoPage);
     }
+
+    @PostMapping
+    public R<String> save(@RequestBody DishDto dishDto){
+        dishService.saveDishAndFlavors(dishDto);
+        return R.success("新增菜品成功");
+    }
+
 }
