@@ -89,6 +89,15 @@ public class DishController {
         return R.success("修改菜品成功");
     }
 
-
-
+    /**
+     *
+     * @param status
+     * @param ids
+     * @return
+     */
+    @PostMapping("status/{status}")
+    public R<String> updateSatus(@PathVariable Integer status,@RequestParam  List<Long> ids){
+        dishService.updateDishStatus(status,ids);
+        return R.success("菜品修改成功");
+    }
 }
