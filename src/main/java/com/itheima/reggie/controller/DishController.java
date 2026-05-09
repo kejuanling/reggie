@@ -8,7 +8,6 @@ import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.entity.Dish;
 import com.itheima.reggie.service.CategoryService;
-import com.itheima.reggie.service.DishFlavorService;
 import com.itheima.reggie.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -67,10 +66,29 @@ public class DishController {
         return R.success(dishDtoPage);
     }
 
-    @PostMapping
-    public R<String> save(@RequestBody DishDto dishDto){
-        dishService.saveDishAndFlavors(dishDto);
-        return R.success("新增菜品成功");
+    /**
+     * 根据id回显菜品信息和对应的口味信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public R<DishDto> get(@PathVariable Long id){
+        DishDto dishDto = dishService.getDishDtoByDishId(id);
+        return R.success(dishDto);
     }
+
+    /**
+     * 修改菜品
+     * @param dishDto
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto){
+        log.info(dishDto.toString());
+        dishService.updateDishAndDishFlavors(dishDto);
+        return R.success("修改菜品成功");
+    }
+
+
 
 }
