@@ -2,7 +2,9 @@ package com.itheima.reggie.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.itheima.reggie.common.CustomException;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Category;
@@ -89,16 +91,31 @@ public class DishController {
         return R.success("修改菜品成功");
     }
 
+//    /**
+//     *菜品修改状态
+//     * @param status
+//     * @param ids
+//     * @return
+//     */
+//    @PostMapping("status/{status}")
+//    public R<String> updateSatus(@PathVariable Integer status,@RequestParam  List<Long> ids){
+//        dishService.updateDishStatus(status,ids);
+//        return R.success("菜品修改成功");
+//    }
+
     /**
-     *菜品修改状态
-     * @param status
-     * @param ids
-     * @return
+     * 菜品修改状态
+     * @param ids 菜品ID列表
+     * @param statusNum 状态值（0=停售，1=启售）
      */
-    @PostMapping("status/{status}")
-    public R<String> updateSatus(@PathVariable Integer status,@RequestParam  List<Long> ids){
-        dishService.updateDishStatus(status,ids);
-        return R.success("菜品修改成功");
+    @PostMapping("/status/{statusNum}")
+    public R<String> status(@RequestParam List<Long> ids, @PathVariable int statusNum){
+        LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
+    //  update dish set status=0 where id in () 停售
+        updateWrapper.in(Dish::getId, ids);
+        updateWrapper.set(Dish::getStatus, statusNum);
+        dishService.update(updateWrapper);
+        return R.success(statusNum == 0 ? "菜品停售成功" : "启售成功");
     }
 
     /**

@@ -83,16 +83,16 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>  implements D
         dishFlavorService.saveBatch(flavorList);
     }
 
-    @Override
-    public void updateDishStatus(Integer status, List<Long> ids) {
-        LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
-        // 设置要更新的状态
-        updateWrapper.set(Dish::getStatus, status);
-        // 设置要更新的菜品id
-        updateWrapper.in(Dish::getId, ids);
-        // 执行更新
-        this.update(updateWrapper);
-    }
+//    @Override
+//    public void updateDishStatus(Integer status, List<Long> ids) {
+//        LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
+//        // 设置要更新的状态
+//        updateWrapper.set(Dish::getStatus, status);
+//        // 设置要更新的菜品id
+//        updateWrapper.in(Dish::getId, ids);
+//        // 执行更新
+//        this.update(updateWrapper);
+//    }
 
     @Transactional
     @Override
