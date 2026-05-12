@@ -104,17 +104,22 @@ public class DishController {
 //    }
 
     /**
-     * 菜品修改状态
-     * @param ids 菜品ID列表
-     * @param statusNum 状态值（0=停售，1=启售）
+     * 菜品修改状态（批量停售/启售）
+     * @param ids 菜品ID集合（通过请求参数传递，格式：?ids=1,2,3）
+     * @param statusNum 状态码（通过路径传递，0=停售，1=启售）
+     * @return 统一响应结果
      */
     @PostMapping("/status/{statusNum}")
     public R<String> status(@RequestParam List<Long> ids, @PathVariable int statusNum){
+        // 1. 创建更新条件构造器（用于构建UPDATE语句）
         LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
-    //  update dish set status=0 where id in () 停售
+        // 2. 设置更新条件：WHERE id IN (ids集合)
         updateWrapper.in(Dish::getId, ids);
+        // 3. 设置要更新的字段：SET status = statusNum
         updateWrapper.set(Dish::getStatus, statusNum);
+        // 4. 执行更新操作
         dishService.update(updateWrapper);
+        // 5. 返回成功提示（根据状态码返回不同文案）
         return R.success(statusNum == 0 ? "菜品停售成功" : "启售成功");
     }
 
