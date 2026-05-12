@@ -90,7 +90,7 @@ public class DishController {
     }
 
     /**
-     *
+     *菜品修改状态
      * @param status
      * @param ids
      * @return
@@ -99,5 +99,17 @@ public class DishController {
     public R<String> updateSatus(@PathVariable Integer status,@RequestParam  List<Long> ids){
         dishService.updateDishStatus(status,ids);
         return R.success("菜品修改成功");
+    }
+
+    /**
+     * 删除菜品
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    public R<String> delete(@RequestParam List<Long> ids){
+        log.info("删除菜品：{}", ids);
+        dishService.removeDish(ids);
+        return R.success("删除菜品成功");
     }
 }

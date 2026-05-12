@@ -93,4 +93,24 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>  implements D
         // 执行更新
         this.update(updateWrapper);
     }
+
+    @Transactional
+    @Override
+    public void removeDish(List<Long> ids) {
+//      1. 判断菜品状态，如果有一个是1（启用），不能删除
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Dish::getId, ids);
+        queryWrapper.eq(Dish::getStatus, 1); // 启售状态
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            // 待删除的集合中，有起售状态的菜品
+            throw new CustomException("待删除的菜品中，存在启售状态的菜品，不能删除");
+        }
+//         2. 删除菜品表的数据
+        this.removeByIds(ids);
+//         3. 删除口味表的数据
+        LambdaQueryWrapper<DishFlavor> updateWrapper = new LambdaQueryWrapper<>();
+        updateWrapper.in(DishFlavor::getDishId, ids);
+        dishFlavorService.remove(updateWrapper);
+    }
 }
