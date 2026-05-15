@@ -25,4 +25,4 @@ mybatis-plus:
       id-type: assign_id  # 主键生成策略：由程序分配ID（雪花算法）
 
 # 自定义配置：文件上传保存路径
-imgpath: f:\.23053131\springboot\img
+imgpath: ${user.dir}/img/

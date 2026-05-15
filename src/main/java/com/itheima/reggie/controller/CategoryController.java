@@ -19,10 +19,16 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    /**
+     *
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/page")
     public R<Page<Category>> page(Integer page,Integer pageSize){
         Page<Category> pageInfo = new Page<Category>(page,pageSize);
-
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Category::getSort);
         categoryService.page(pageInfo, queryWrapper);
@@ -49,6 +55,12 @@ public class CategoryController {
         categoryService.deleteByCategoryId(id);
         return R.success("删除成功");
     }
+
+    /**
+     * 菜品分类查询
+     * @param type
+     * @return
+     */
     //一级路径Category，二级路径List,参数是表单参数Integer
     @GetMapping("/list")
     public R<List<Category>> list(Integer type){
@@ -59,10 +71,7 @@ public class CategoryController {
         queryWrapper.eq(Category::getType,type);
         //3.执行查询
         List<Category> list = categoryService.list(queryWrapper);
-
         return R.success(list);
     }
-
-
 
 }

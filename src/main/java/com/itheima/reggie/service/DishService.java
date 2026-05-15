@@ -7,6 +7,7 @@ import com.itheima.reggie.entity.Dish;
 import java.util.List;
 
 public interface DishService extends IService<Dish> {
+    //新增菜品
     public void saveDishAndFlavors(DishDto dishDto);
     //根据id查询菜品信息和对应的口味信息
     public DishDto getDishDtoByDishId(Long id);
