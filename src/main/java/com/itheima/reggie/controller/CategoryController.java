@@ -58,17 +58,17 @@ public class CategoryController {
 
     /**
      * 菜品分类查询
-     * @param type
+     * @param category
      * @return
      */
     //一级路径Category，二级路径List,参数是表单参数Integer
     @GetMapping("/list")
-    public R<List<Category>> list(Integer type){
+    public R<List<Category>> list(Category category){
         //查询分类
         //1.创建查询对象
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         //2.创建条件
-        queryWrapper.eq(Category::getType,type);
+        queryWrapper.eq(category.getType()!=null,Category::getType,category);
         //3.执行查询
         List<Category> list = categoryService.list(queryWrapper);
         return R.success(list);
