@@ -17,4 +17,5 @@ public interface DishService extends IService<Dish> {
 //    void updateDishStatus(Integer status, List<Long> ids);
 //    删除菜品
     void removeDish(List<Long> ids);
+    List<DishDto>  getDishDtosByDishId(Dish dish);
 }

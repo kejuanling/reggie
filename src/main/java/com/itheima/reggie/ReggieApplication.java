@@ -15,5 +15,6 @@ public class ReggieApplication {
         SpringApplication.run(ReggieApplication.class, args);
         log.info("瑞吉外卖启动成功!");
         log.info("后台访问地址：http://localhost:8080/backend/index.html");
+        log.info("手机端访问地址：http://localhost:8080/front/index.html");
     }
 }

@@ -1,4 +1,8 @@
 package com.itheima.reggie.service;
 
-public interface ShoppingCartService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.itheima.reggie.entity.ShoppingCart;
+
+public interface ShoppingCartService extends IService<ShoppingCart> {
+    ShoppingCart savaShoppingCart(ShoppingCart shoppingCart);
 }
