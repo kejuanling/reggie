@@ -2,12 +2,15 @@ package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.itheima.reggie.common.BaseContext;
+import com.itheima.reggie.common.CustomException;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.AddressBook;
 import com.itheima.reggie.service.AddressBookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -48,5 +51,30 @@ public class AddressBookController {
         return R.success(addressBook);
     }
 
-//    @GetMapping("/list")
+    @GetMapping("/list")
+    public R<List<AddressBook>> list(){
+        LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(AddressBook::getUserId,BaseContext.getCurrentId());
+        queryWrapper.eq(AddressBook::getIsDeleted,0);
+        List<AddressBook> list=addressBookService.list(queryWrapper);
+        if(list.size()<=0){
+            throw new CustomException("暂无地址");
+        }
+        return R.success(list);
+    }
+
+    @DeleteMapping
+    public R<String> delete(@RequestParam Long ids) {
+        LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(AddressBook::getIsDeleted,1);
+        queryWrapper.eq(AddressBook::getId,ids);
+        addressBookService.update(queryWrapper);
+        return R.success("删除成功");
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody AddressBook addressBook) {
+        addressBookService.updateById(addressBook);
+        return R.success("修改成功");
+    }
 }
