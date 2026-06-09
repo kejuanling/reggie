@@ -27,7 +27,7 @@ public class AddressBookController {
 
     }
 
-    @PutMapping
+    @PutMapping("/default")
     public R<String> updateDefalt(@RequestBody AddressBook addressBook) {
         addressBookService.updateDefault(addressBook);
         return R.success("设置默认地址成功");
