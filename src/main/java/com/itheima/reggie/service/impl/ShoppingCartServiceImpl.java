@@ -28,4 +28,27 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
             return shoppingCart;
         }
     }
+
+    @Override
+    public ShoppingCart subShoppingCart(ShoppingCart shoppingCart) {
+        LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
+        queryWrapper.eq(shoppingCart.getDishId()!=null, ShoppingCart::getDishId, shoppingCart.getDishId());
+        queryWrapper.eq(shoppingCart.getSetmealId()!=null, ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
+        ShoppingCart cartForMysql = super.getOne(queryWrapper);
+
+        if(cartForMysql != null) {
+            if(cartForMysql.getNumber() > 1){
+                cartForMysql.setNumber(cartForMysql.getNumber() - 1);
+                super.updateById(cartForMysql);
+                return cartForMysql;
+            } else {
+                // 数量为1时，删除该记录
+                super.removeById(cartForMysql.getId());
+                cartForMysql.setNumber(0);
+                return cartForMysql;
+            }
+        }
+        return shoppingCart;
+    }
 }

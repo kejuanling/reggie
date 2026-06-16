@@ -14,13 +14,17 @@ public class AddressBookServiceImpl extends ServiceImpl<AddressBookMapper, Addre
 
     @Override
     public void updateDefault(AddressBook addressBook) {
+        // 1. 先清除该用户所有地址的默认状态
         LambdaUpdateWrapper<AddressBook> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.set(AddressBook::getIsDefault,0);
         updateWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        updateWrapper.set(AddressBook::getIsDefault, 0);
         super.update(updateWrapper);
+
+        // 2. 再设置指定地址为默认
         LambdaUpdateWrapper<AddressBook> updateWrapper2 = new LambdaUpdateWrapper<>();
-        updateWrapper2.set(AddressBook::getIsDefault,1);
+        updateWrapper2.eq(AddressBook::getId, addressBook.getId());
         updateWrapper2.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        updateWrapper2.set(AddressBook::getIsDefault, 1);
         super.update(updateWrapper2);
     }
 }

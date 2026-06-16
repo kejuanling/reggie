@@ -261,9 +261,11 @@
           computed:{
             goodsNum(){
               let num = 0
-              this.cartData.forEach(item=>{
-                num += item.number 
-              })
+              if(this.cartData && this.cartData.length > 0){
+                this.cartData.forEach(item=>{
+                  num += item.number 
+                })
+              }
               if(num <99){
                 return num
               }else{
@@ -272,9 +274,11 @@
             },
             goodsPrice(){
               let price = 0
-              this.cartData.forEach(item=>{
-                price += (item.number * item.amount)
-              })
+              if(this.cartData && this.cartData.length > 0){
+                this.cartData.forEach(item=>{
+                  price += (item.number * item.amount)
+                })
+              }
               return price
             }
           },
@@ -335,8 +339,8 @@
               }
               const res = await dishListApi({categoryId:this.categoryId,status:1})
               if(res.code === 1){
-                let dishList = res.data
-                const cartData  = this.cartData
+                let dishList = res.data || []
+                const cartData  = this.cartData || []
                 if(dishList.length > 0 && cartData.length > 0){
                   dishList.forEach(dish=>{
                     cartData.forEach(cart=>{
@@ -358,8 +362,8 @@
               }
               const res = await setmealListApi({categoryId:this.categoryId,status:1})
               if(res.code === 1){
-                  let dishList = res.data
-                  const cartData  = this.cartData
+                  let dishList = res.data || []
+                  const cartData  = this.cartData || []
                   if(dishList.length > 0 && cartData.length > 0){
                     dishList.forEach(dish=>{
                       cartData.forEach(cart=>{
@@ -424,7 +428,7 @@
                     setmealId:item.id,
                   }
                 }
-                const res = await updateCartApi(params)
+                const res = await subCartApi(params)
                 if(res.code === 1){
                 this.dishList.forEach(dish=>{
                   if(dish.id === item.id){
@@ -475,7 +479,7 @@
                   dishId:item.dishId,
                   setmealId:item.setmealId,
                 }
-                const res = await updateCartApi(params)
+                const res = await subCartApi(params)
                 if(res.code === 1){
                 this.dishList.forEach(dish=>{
                   if(dish.id === (item.dishId || item.setmealId)){

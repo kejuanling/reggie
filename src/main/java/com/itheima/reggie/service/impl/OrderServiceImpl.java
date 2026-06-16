@@ -31,9 +31,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     private AddressBookService addressBookService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private CategoryController categoryController;
-
     @Override
     @Transactional
     public void submit(Orders orders) {
@@ -81,5 +78,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     updateWrapper.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
     shoppingCartService.remove(updateWrapper);
 
+    }
+
+    @Override
+    @Transactional
+    public void againOrder(Long orderId) {
+        LambdaQueryWrapper<OrderDetail> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(OrderDetail::getOrderId, orderId);
+        List<OrderDetail> detailList = orderDetailService.list(queryWrapper);
+        
+        if (detailList == null || detailList.isEmpty()) {
+            throw new CustomException("订单明细不存在");
+        }
+
+        List<ShoppingCart> cartList = detailList.stream().map(detail -> {
+            ShoppingCart cart = new ShoppingCart();
+            BeanUtils.copyProperties(detail, cart, "id");
+            cart.setUserId(BaseContext.getCurrentId());
+            cart.setCreateTime(LocalDateTime.now());
+            return cart;
+        }).collect(Collectors.toList());
+        
+        shoppingCartService.saveBatch(cartList);
     }
 }

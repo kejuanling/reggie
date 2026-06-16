@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 @Service
 @Slf4j
 public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>  implements DishService {

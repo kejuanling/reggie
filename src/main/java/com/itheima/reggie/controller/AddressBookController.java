@@ -28,7 +28,7 @@ public class AddressBookController {
     }
 
     @PutMapping("/default")
-    public R<String> updateDefalt(@RequestBody AddressBook addressBook) {
+    public R<String> updateDefault(@RequestBody AddressBook addressBook) {
         addressBookService.updateDefault(addressBook);
         return R.success("设置默认地址成功");
     }
@@ -42,11 +42,24 @@ public class AddressBookController {
     @GetMapping("/default")
     public R<AddressBook> getDefault(){
         LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(AddressBook::getUserId,BaseContext.getCurrentId());
+        queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
         queryWrapper.eq(AddressBook::getIsDefault,1);
         AddressBook addressBook=addressBookService.getOne(queryWrapper);
+
         if(addressBook==null){
-            return R.error("请先设置默认地址");
+            // 如果没有默认地址，获取用户最新的一条地址
+            LambdaQueryWrapper<AddressBook> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+            wrapper.orderByDesc(AddressBook::getUpdateTime);
+            wrapper.last("limit 1");
+            addressBook = addressBookService.getOne(wrapper);
+
+            if(addressBook == null){
+                return R.error("请先添加收货地址");
+            }
+            // 自动设为默认
+            addressBook.setIsDefault(1);
+            addressBookService.updateById(addressBook);
         }
         return R.success(addressBook);
     }
@@ -57,18 +70,18 @@ public class AddressBookController {
         queryWrapper.eq(AddressBook::getUserId,BaseContext.getCurrentId());
         queryWrapper.eq(AddressBook::getIsDeleted,0);
         List<AddressBook> list=addressBookService.list(queryWrapper);
-        if(list.size()<=0){
+        if(list.isEmpty()){
             throw new CustomException("暂无地址");
         }
         return R.success(list);
     }
 
     @DeleteMapping
-    public R<String> delete(@RequestParam Long ids) {
-        LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(AddressBook::getIsDeleted,1);
-        queryWrapper.eq(AddressBook::getId,ids);
-        addressBookService.update(queryWrapper);
+    public R<String> delete(@RequestParam Long id) {
+        AddressBook addressBook = new AddressBook();
+        addressBook.setId(id);
+        addressBook.setIsDeleted(1);
+        addressBookService.updateById(addressBook);
         return R.success("删除成功");
     }
 

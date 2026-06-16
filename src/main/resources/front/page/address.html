@@ -143,12 +143,16 @@
                             }
                         }
                     },
-                    itemClick(item){
+                    async itemClick(item){
                         const url = document.referrer
-                        //表示是从订单页面跳转过来的
+                        // 表示是从订单页面跳转过来的
                         if(url.includes('order')){
-                            this.setDefaultAddress(item)
-                            history.go(-1)
+                            // 先设置为默认地址，等待完成后再返回
+                            await this.setDefaultAddress(item)
+                            // 设置完成后刷新页面再返回，确保数据更新
+                            setTimeout(() => {
+                                window.location.href = '/front/page/add-order.html'
+                            }, 200)
                         }
                     }
 

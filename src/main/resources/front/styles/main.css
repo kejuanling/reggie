@@ -557,6 +557,16 @@
   width: 64rem;
   height: 64rem;
 }
+#main .dialogCart .divCartContent .divNum .divDishNum {
+  font-size: 15rem;
+  font-family: PingFangSC, PingFangSC-Regular;
+  font-weight: 500;
+  text-align: center;
+  color: #333333;
+  line-height: 36rem;
+  letter-spacing: 0;
+  width: auto;
+}
 
 #main .dialogCart .divCartContent .divDesc .name {
   height: 22rem;

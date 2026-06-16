@@ -46,10 +46,10 @@ public class SetmealController {
 
         Page<Setmeal> pageInfo = new Page<>(page, pageSize);
 
-        LambdaQueryWrapper<Setmeal> Wrapper = new LambdaQueryWrapper<>();
-        Wrapper.like(StringUtils.isNotEmpty(name), Setmeal::getName, name);
-        Wrapper.orderByDesc(Setmeal::getUpdateTime);
-        setmealService.page(pageInfo, Wrapper);
+        LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(name), Setmeal::getName, name);
+        wrapper.orderByDesc(Setmeal::getUpdateTime);
+        setmealService.page(pageInfo, wrapper);
         Page<SetmealDto> pageInfoDto=new Page<>(page, pageSize);
         BeanUtils.copyProperties(pageInfo,pageInfoDto,"records");
         // 转换 records
@@ -89,12 +89,22 @@ public class SetmealController {
         return R.success(setmealDto);
     }
 
+    /**
+     * 套餐列表
+     * @param setmeal
+     * @return
+     */
     @GetMapping("/list")
     public R<List<Setmeal>> list(Setmeal setmeal){
-        LambdaQueryWrapper<Setmeal> Wrapper = new LambdaQueryWrapper<>();
-        Wrapper.eq(Setmeal::getCategoryId,setmeal.getCategoryId());
-        Wrapper.eq(Setmeal::getStatus,1);
-        List<Setmeal> setmealList=setmealService.list(Wrapper);
+        LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
+        if (setmeal.getCategoryId() != null) {
+            wrapper.eq(Setmeal::getCategoryId, setmeal.getCategoryId());
+        }
+        wrapper.eq(Setmeal::getStatus, 1);
+        List<Setmeal> setmealList = setmealService.list(wrapper);
+        if (setmealList == null || setmealList.isEmpty()) {
+            return R.success(null);
+        }
         return R.success(setmealList);
     }
 
@@ -113,14 +123,14 @@ public class SetmealController {
     /**
      * 修改套餐售卖状态
      * @param ids
-     * @param statusNum
+     * @param status
      * @return
      */
-    @PostMapping("/status/{statusNum}")
-    public R<String> status(@RequestParam List<Long> ids, @PathVariable int statusNum) {
-        log.info("修改套餐状态：ids={}, status={}", ids, statusNum);
-        setmealService.updateStatus(ids, statusNum);
-        return R.success(statusNum == 0 ? "套餐停售成功" : "套餐启售成功");
+    @PostMapping("/status/{status}")
+    public R<String> updateStatus(@RequestParam List<Long> ids, @PathVariable int status) {
+        // status: 0-停售, 1-启售
+        setmealService.updateStatus(ids, status);
+        return R.success(status == 0 ? "套餐停售成功" : "套餐启售成功");
     }
 
     /**

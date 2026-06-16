@@ -90,15 +90,9 @@
             mounted(){},
             methods:{
                 goBack(){
-                    const url = document.referrer
-                    //表示是从订单页面跳转过来的
-                    if(url.includes('success')){
-                        window.requestAnimationFrame(()=>{
-                                window.location.href= '/front/index.html'
-                        })   
-                    }else{
-                        history.go(-1)
-                    }
+                    window.requestAnimationFrame(()=>{
+                        window.location.href = '/front/index.html'
+                    })   
                 },
                 initData(){
                     this.getList()

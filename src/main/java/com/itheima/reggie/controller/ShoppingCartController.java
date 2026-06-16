@@ -24,6 +24,15 @@ public class ShoppingCartController {
         return R.success(cart);
     }
 
+    @PostMapping("/sub")
+    public R<ShoppingCart> sub(@RequestBody ShoppingCart shoppingCart) {
+        ShoppingCart cart = shoppingCartService.subShoppingCart(shoppingCart);
+        if (cart == null) {
+            return R.error("操作失败");
+        }
+        return R.success(cart);
+    }
+
     @GetMapping("/list")
     public R<List<ShoppingCart>> list() {
         log.info("查看购物车");
@@ -32,6 +41,9 @@ public class ShoppingCartController {
         queryWrapper.orderByAsc(ShoppingCart::getCreateTime);
 
         List<ShoppingCart> list = shoppingCartService.list(queryWrapper);
+        if (list == null || list.isEmpty()) {
+            return R.success(null);
+        }
         return R.success(list);
     }
 

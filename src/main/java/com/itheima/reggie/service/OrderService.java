@@ -5,4 +5,6 @@ import com.itheima.reggie.entity.Orders;
 
 public interface OrderService extends IService<Orders> {
     void submit(Orders orders);
+    
+    void againOrder(Long orderId);
 }

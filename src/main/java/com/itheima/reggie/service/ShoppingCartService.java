@@ -5,4 +5,6 @@ import com.itheima.reggie.entity.ShoppingCart;
 
 public interface ShoppingCartService extends IService<ShoppingCart> {
     ShoppingCart savaShoppingCart(ShoppingCart shoppingCart);
+
+    ShoppingCart subShoppingCart(ShoppingCart shoppingCart);
 }

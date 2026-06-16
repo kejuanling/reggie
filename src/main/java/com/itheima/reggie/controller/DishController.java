@@ -50,6 +50,9 @@ public class DishController {
         //执行分页查询
         dishService.page(dishPage,queryWrapper);
         //对象拷贝
+        if (dishPage.getRecords() == null || dishPage.getRecords().isEmpty()) {
+            return R.success(dishDtoPage);
+        }
         BeanUtils.copyProperties(dishPage,dishDtoPage,"records");
 
         List<Dish> records = dishPage.getRecords();
@@ -76,6 +79,9 @@ public class DishController {
     @GetMapping("/{id}")
     public R<DishDto> get(@PathVariable Long id){
         DishDto dishDto = dishService.getDishDtoByDishId(id);
+        if (dishDto == null) {
+            return R.error("菜品不存在");
+        }
         return R.success(dishDto);
     }
 
@@ -154,6 +160,9 @@ public class DishController {
     @GetMapping("/list")
     public R<List<DishDto>> list(Dish dish){
        List<DishDto> dishDtos=dishService.getDishDtosByDishId(dish);
+       if (dishDtos == null || dishDtos.isEmpty()) {
+           return R.success(null);
+       }
        return R.success(dishDtos);
     }
 }

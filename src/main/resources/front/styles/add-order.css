@@ -1,4 +1,4 @@
-#add_order .divHead {
+#order .divHead {
   width: 100%;
   height: 88rem;
   opacity: 1;
@@ -6,7 +6,7 @@
   position: relative;
 }
 
-#add_order .divHead .divTitle {
+#order .divHead .divTitle {
   font-size: 18rem;
   font-family: PingFangSC, PingFangSC-Regular;
   font-weight: 500;
@@ -19,314 +19,269 @@
   width: 100%;
 }
 
-#add_order .divHead .divTitle i {
+#order .divHead .divTitle i {
   position: absolute;
   left: 16rem;
   top: 50%;
   transform: translate(0, -50%);
 }
 
-#add_order .divContent {
-  margin: 10rem 10rem 0 10rem;
-  height: calc(100vh - 56rem - 110rem);
-  overflow-y: auto;
+#order .divBody {
+  margin: 10rem;
+  margin-bottom: 110rem;
 }
 
-#add_order .divContent .divAddress {
-  height: 120rem;
-  opacity: 1;
-  background: #ffffff;
-  border-radius: 6rem;
-  position: relative;
-  padding: 11rem 10rem 0 16rem;
-}
-
-#add_order .divContent .divAddress .address {
-  height: 25rem;
-  opacity: 1;
-  font-size: 18rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 500;
-  text-align: left;
-  color: #20232a;
-  line-height: 25rem;
-  margin-bottom: 4rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 300rem;
-}
-
-#add_order .divContent .divAddress .name {
-  height: 17rem;
-  opacity: 1;
-  font-size: 12rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 400;
-  text-align: left;
-  color: #333333;
-  line-height: 17rem;
-}
-
-#add_order .divContent .divAddress .name span:first-child {
-  margin-right: 2rem;
-}
-
-#add_order .divContent .divAddress i {
-  position: absolute;
-  right: 14rem;
-  top: 32rem;
-}
-
-#add_order .divContent .divAddress .divSplit {
-  width: 100%;
-  height: 1px;
-  opacity: 1;
-  border: 0;
-  background-color: #ebebeb;
-  margin-top: 14rem;
-}
-
-#add_order .divContent .divAddress .divFinishTime {
-  height: 47rem;
-  opacity: 1;
-  font-size: 12rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 400;
-  text-align: left;
-  color: #333333;
-  line-height: 47rem;
-  margin-left: 2rem;
-}
-
-#add_order .divContent .order {
-  background: #ffffff;
-  border-radius: 6rem;
-  margin-top: 10rem;
-  margin-bottom: 10rem;
-  padding: 3rem 10rem 7rem 16rem;
-}
-
-#add_order .divContent .order .title {
-  height: 56rem;
-  line-height: 56rem;
-  opacity: 1;
-  font-size: 16rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 500;
-  text-align: left;
-  color: #333333;
-  letter-spacing: 0;
-}
-
-#add_order .divContent .order .divSplit {
-  height: 1px;
-  opacity: 1;
-  background-color: #efefef;
-  border: 0;
-}
-
-#add_order .divContent .order .itemList .item {
+#order .divAddress {
   display: flex;
+  align-items: center;
+  height: 100rem;
+  background: #ffffff;
+  border-radius: 8rem;
+  padding: 0 20rem;
+  margin-bottom: 10rem;
 }
 
-#add_order .divContent .order .itemList .item .el-image {
-  padding-top: 20rem;
-  padding-bottom: 20rem;
-  width: 64rem;
-  height: 64rem;
+#order .divAddress .divIcon {
+  width: 40rem;
+  height: 40rem;
+  margin-right: 15rem;
 }
 
-#add_order .divContent .order .itemList .item .el-image img {
-  width: 64rem;
-  height: 64rem;
+#order .divAddress .divIcon img {
+  width: 100%;
+  height: 100%;
 }
 
-#add_order .divContent .order .itemList .item:first-child .desc {
-  border: 0;
+#order .divAddress .divInfo {
+  flex: 1;
 }
 
-#add_order .divContent .order .itemList .item .desc {
-  padding-top: 20rem;
-  padding-bottom: 20rem;
-  border-top: 2px solid #ebeef5;
-  width: calc(100% - 64rem);
+#order .divAddress .divTop {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rem;
 }
 
-#add_order .divContent .order .itemList .item .desc .name {
-  height: 22rem;
-  opacity: 1;
+#order .divAddress .spanName {
+  font-size: 18rem;
+  font-weight: 500;
+  color: #333;
+  margin-right: 20rem;
+}
+
+#order .divAddress .spanPhone {
   font-size: 16rem;
-  font-family: PingFangSC, PingFangSC-Semibold;
-  font-weight: 600;
-  text-align: left;
-  color: #20232a;
-  line-height: 22rem;
-  letter-spacing: 0;
-  margin-left: 10rem;
-  margin-bottom: 16rem;
+  color: #666;
 }
 
-#add_order .divContent .order .itemList .item .desc .numPrice {
-  height: 22rem;
+#order .divAddress .divAddressDetail {
+  font-size: 14rem;
+  color: #999;
+  line-height: 1.5;
+}
+
+#order .divAddress .divAddAddress {
+  display: flex;
+  align-items: center;
+  color: #999;
+  font-size: 16rem;
+}
+
+#order .divAddress .divAddAddress i {
+  margin-left: 10rem;
+}
+
+#order .divShop {
+  display: flex;
+  align-items: center;
+  height: 100rem;
+  background: #ffffff;
+  border-radius: 8rem;
+  padding: 0 20rem;
+  margin-bottom: 10rem;
+}
+
+#order .divShop .divLogo {
+  width: 56rem;
+  height: 56rem;
+  background-image: url("../images/logo.png");
+  background-size: cover;
+  margin-right: 15rem;
+}
+
+#order .divShop .divDesc {
+  flex: 1;
+}
+
+#order .divShop .divName {
+  font-size: 18rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6rem;
+}
+
+#order .divShop .divSend {
+  display: flex;
+  font-size: 12rem;
+  color: #999;
+}
+
+#order .divShop .divSend span {
+  display: flex;
+  align-items: center;
+  margin-right: 20rem;
+}
+
+#order .divShop .divSend img {
+  width: 14rem;
+  height: 14rem;
+  margin-right: 5rem;
+}
+
+#order .divGoods {
+  background: #ffffff;
+  border-radius: 8rem;
+  padding: 15rem 20rem;
+  margin-bottom: 10rem;
+}
+
+#order .divGoods .divTitle {
+  font-size: 16rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 15rem;
+  padding-bottom: 10rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#order .divGoodsList {
+  display: flex;
+  flex-direction: column;
+}
+
+#order .divGoodsItem {
+  display: flex;
+  padding: 10rem 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+#order .divGoodsItem:last-child {
+  border-bottom: none;
+}
+
+#order .divGoodsItem .imgGoods {
+  width: 80rem;
+  height: 80rem;
+  margin-right: 15rem;
+}
+
+#order .divGoodsItem .imgGoods img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6rem;
+}
+
+#order .divGoodsItem .divItemInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5rem 0;
+}
+
+#order .divGoodsItem .divName {
+  font-size: 16rem;
+  color: #333;
+}
+
+#order .divGoodsItem .divBottom {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-#add_order .divContent .order .itemList .item .desc .numPrice span {
-  margin-left: 12rem;
-  height: 20rem;
-  opacity: 1;
+#order .divGoodsItem .spanPrice {
+  font-size: 18rem;
+  font-weight: 500;
+  color: #e94e3c;
+}
+
+#order .divGoodsItem .spanNum {
   font-size: 14rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 400;
-  text-align: left;
-  color: #818693;
-  line-height: 20rem;
-  letter-spacing: 0;
-  display: inline-block;
+  color: #999;
 }
 
-#add_order .divContent .order .itemList .item .desc .numPrice .price {
-  font-size: 20rem;
-  font-family: DIN, DIN-Medium;
-  font-weight: 500;
-  text-align: left;
-  color: #e94e3c;
-}
-
-#add_order
-  .divContent
-  .order
-  .itemList
-  .item
-  .desc
-  .numPrice
-  .price
-  .spanMoney {
-  color: #e94e3c;
-  font-size: 12rem;
-}
-
-#add_order .divContent .note {
-  height: 164rem;
-  opacity: 1;
+#order .divRemark {
   background: #ffffff;
-  border-radius: 6px;
-  margin-top: 11rem;
-  padding: 3rem 10rem 10rem 11rem;
+  border-radius: 8rem;
+  padding: 15rem 20rem;
 }
 
-#add_order .divContent .note .title {
-  height: 56rem;
-  opacity: 1;
+#order .divRemark .divLabel {
   font-size: 16rem;
-  font-family: PingFangSC, PingFangSC-Regular;
   font-weight: 500;
-  text-align: left;
-  color: #333333;
-  line-height: 56rem;
-  letter-spacing: 0px;
-  border-bottom: 2rem solid #efefef;
+  color: #333;
+  margin-bottom: 10rem;
 }
 
-#add_order .divContent .note .van-cell {
-  height: 103rem;
-}
-
-#add_order .divCart {
-  width: 345rem;
-  height: 44rem;
-  opacity: 1;
-  background: #000000;
-  border-radius: 25rem;
-  box-shadow: 0rem 3rem 5rem 0rem rgba(0, 0, 0, 0.25);
-  margin: 0 auto;
-  margin-top: 10rem;
-  z-index: 3000;
-  position: absolute;
-  /* bottom: 35rem; */
-  bottom: 12rem;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-#add_order .divCart .imgCartActive {
-  background-image: url("./../images/cart_active.png");
-}
-
-#add_order .divCart .imgCart {
-  background-image: url("./../images/cart.png");
-}
-
-#add_order .divCart > div:first-child {
-  width: 60rem;
+#order .divRemark .inputRemark {
+  width: 100%;
   height: 60rem;
-  position: absolute;
-  left: 11rem;
+  border: none;
+  font-size: 14rem;
+  color: #666;
+  background: #f8f8f8;
+  border-radius: 6rem;
+  padding: 0 15rem;
+  box-sizing: border-box;
+}
+
+#order .divBottom {
+  position: fixed;
   bottom: 0;
-  background-size: 60rem 60rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80rem;
+  background: #ffffff;
+  padding: 0 20rem;
+  box-shadow: 0 -2rem 10rem rgba(0, 0, 0, 0.1);
 }
 
-#add_order .divCart .divNum {
-  font-size: 12rem;
-  font-family: DIN, DIN-Medium;
-  font-weight: 500;
-  text-align: left;
-  color: #ffffff;
-  letter-spacing: 0rem;
-  position: absolute;
-  left: 92rem;
-  top: 10rem;
+#order .divBottom .divTotal {
+  display: flex;
+  align-items: baseline;
+  font-size: 16rem;
+  color: #333;
 }
 
-#add_order .divCart .divNum span:last-child {
-  font-size: 20rem;
+#order .divBottom .spanTotalPrice {
+  font-size: 24rem;
+  font-weight: 600;
+  color: #e94e3c;
+  margin-left: 5rem;
 }
 
-#add_order .divCart > div:last-child {
-  width: 102rem;
-  height: 36rem;
-  opacity: 1;
-  border-radius: 18rem;
-  font-size: 15rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 500;
-  text-align: center;
-  line-height: 36rem;
-  position: absolute;
-  right: 5rem;
-  top: 4rem;
-}
-
-#add_order .divCart .btnSubmit {
-  color: white;
+#order .divBottom .btnSubmit {
+  min-width: 140rem;
+  width: 140rem;
+  height: 48rem;
   background: #d8d8d8;
-}
-#add_order .divCart .btnSubmitActive {
-  color: #333333;
-  background: #ffc200;
-}
-
-#add_order .divCart .divGoodsNum {
-  width: 18rem;
-  height: 18rem;
-  opacity: 1;
-  background: #e94e3c;
-  border-radius: 50%;
+  border-radius: 24rem;
   text-align: center;
-  font-size: 12rem;
-  font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 500;
-  color: #ffffff;
-  line-height: 18rem;
-  position: absolute;
-  left: 57rem;
-  top: -5rem;
+  line-height: 48rem;
+  font-size: 16rem;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 20rem;
 }
 
-#add_order .divCart .moreGoods {
-  width: 25rem;
-  height: 25rem;
-  line-height: 25rem;
+#order .divBottom .btnSubmitActive {
+  background: #ffc200;
+  color: #333;
 }

@@ -24,41 +24,62 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 发送验证码
+     * @param user 用户对象（包含phone字段）
+     * @param session HTTP会话
+     * @return 响应结果
+     */
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user, HttpSession session) {
         String phone = user.getPhone();
-        if(StringUtils.isNotEmpty(phone)){
+        if (StringUtils.isNotEmpty(phone)) {
             String code = ValidateCodeUtils.generateValidateCode(4).toString();
-            log.info("code:{}",code);
-
-            session.setAttribute(phone,code);
+            log.info("验证码：{}", code);
+            session.setAttribute(phone, code);
             return R.success("手机验证码发送成功");
         }
         return R.error("短信发送失败");
     }
 
+    /**
+     * 用户登录（验证码登录）
+     * @param map 包含phone和code的Map
+     * @param session HTTP会话
+     * @return 用户信息
+     */
     @PostMapping("/login")
-    public R<User> login(@RequestBody Map map, HttpSession session) {
-        log.info(map.toString());
-        String phone = map.get("phone").toString();
-        String code = map.get("code").toString();
-        String codeInSession= (String) session.getAttribute(phone);
+    public R<User> login(@RequestBody Map<String, String> map, HttpSession session) {
+        log.info("用户登录：{}", map);
+        String phone = map.get("phone");
+        String code = map.get("code");
+        String codeInSession = (String) session.getAttribute(phone);
 
-        if(codeInSession!=null&&codeInSession.equals(code)){
-            LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
-            queryWrapper.eq(User::getPhone,phone);
+        if (codeInSession != null && codeInSession.equals(code)) {
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getPhone, phone);
 
-            User user=userService.getOne(queryWrapper);
-            if(user==null){
-                user=new User();
+            User user = userService.getOne(queryWrapper);
+            if (user == null) {
+                user = new User();
                 user.setPhone(phone);
                 user.setStatus(1);
                 userService.save(user);
             }
-            session.setAttribute("user",user.getId());
+            session.setAttribute("user", user.getId());
             return R.success(user);
         }
         return R.error("登录失败");
     }
 
+    /**
+     * 用户退出登录
+     * @param session HTTP会话
+     * @return 响应结果
+     */
+    @PostMapping("/loginout")
+    public R<String> loginout(HttpSession session) {
+        session.invalidate();
+        return R.success("退出成功");
+    }
 }
