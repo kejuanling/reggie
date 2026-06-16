@@ -1,8 +1,0 @@
-{
-  "jdk": {
-    "version": "11"
-  },
-  "maven": {
-    "version": "3.9.6"
-  }
-}
