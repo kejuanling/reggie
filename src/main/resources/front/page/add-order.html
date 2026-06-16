@@ -83,7 +83,7 @@
                 <span>合计：</span>
                 <span class="spanTotalPrice">￥{{ goodsPrice }}</span>
             </div>
-            <div :class="{btnSubmitActive: canSubmit, btnSubmit: !canSubmit}" @click="submitOrder">
+            <div :class="['btnSubmit', { btnSubmitActive: canSubmit }]" @click="submitOrder">
                 提交订单
             </div>
         </div>
