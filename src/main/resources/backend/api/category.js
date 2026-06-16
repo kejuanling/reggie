@@ -1,4 +1,15 @@
-// 查询列表接口
+/**
+ * 分类管理API
+ * 对应后端 CategoryController
+ */
+
+/**
+ * 分类分页查询
+ * @param {Object} params - 查询参数
+ * @param {number} params.page - 页码
+ * @param {number} params.pageSize - 每页大小
+ * @returns {Promise} 分页结果
+ */
 const getCategoryPage = (params) => {
   return $axios({
     url: '/category/page',
@@ -7,7 +18,11 @@ const getCategoryPage = (params) => {
   })
 }
 
-// 编辑页面反查详情接口
+/**
+ * 根据ID查询分类详情
+ * @param {number} id - 分类ID
+ * @returns {Promise} 分类详情
+ */
 const queryCategoryById = (id) => {
   return $axios({
     url: `/category/${id}`,
@@ -15,8 +30,12 @@ const queryCategoryById = (id) => {
   })
 }
 
-// 删除当前列的接口
-const deleCategory = (id) => {
+/**
+ * 删除分类
+ * @param {number} id - 分类ID
+ * @returns {Promise} 操作结果
+ */
+const deleteCategory = (id) => {
   return $axios({
     url: '/category',
     method: 'delete',
@@ -24,7 +43,11 @@ const deleCategory = (id) => {
   })
 }
 
-// 修改接口
+/**
+ * 修改分类
+ * @param {Object} params - 分类信息
+ * @returns {Promise} 操作结果
+ */
 const editCategory = (params) => {
   return $axios({
     url: '/category',
@@ -33,7 +56,11 @@ const editCategory = (params) => {
   })
 }
 
-// 新增接口
+/**
+ * 新增分类
+ * @param {Object} params - 分类信息
+ * @returns {Promise} 操作结果
+ */
 const addCategory = (params) => {
   return $axios({
     url: '/category',

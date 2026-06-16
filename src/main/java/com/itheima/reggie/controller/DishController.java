@@ -50,6 +50,9 @@ public class DishController {
         //执行分页查询
         dishService.page(dishPage,queryWrapper);
         //对象拷贝
+        if (dishPage.getRecords() == null || dishPage.getRecords().isEmpty()) {
+            return R.success(dishDtoPage);
+        }
         BeanUtils.copyProperties(dishPage,dishDtoPage,"records");
 
         List<Dish> records = dishPage.getRecords();
@@ -76,6 +79,9 @@ public class DishController {
     @GetMapping("/{id}")
     public R<DishDto> get(@PathVariable Long id){
         DishDto dishDto = dishService.getDishDtoByDishId(id);
+        if (dishDto == null) {
+            return R.error("菜品不存在");
+        }
         return R.success(dishDto);
     }
 
@@ -147,22 +153,16 @@ public class DishController {
     }
 
     /**
-     * 根据条件查询对应的菜品数据
+     *
      * @param dish
      * @return
      */
     @GetMapping("/list")
-    public R<List<Dish>> list(Dish dish){
-        //构造查询条件
-        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(dish.getCategoryId() != null ,Dish::getCategoryId,dish.getCategoryId());
-        //添加条件，查询状态为1（起售状态）的菜品
-        queryWrapper.eq(Dish::getStatus,1);
-        //添加排序条件
-        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
-
-        List<Dish> list = dishService.list(queryWrapper);
-
-        return R.success(list);
+    public R<List<DishDto>> list(Dish dish){
+       List<DishDto> dishDtos=dishService.getDishDtosByDishId(dish);
+       if (dishDtos == null || dishDtos.isEmpty()) {
+           return R.success(null);
+       }
+       return R.success(dishDtos);
     }
 }

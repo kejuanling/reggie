@@ -4,6 +4,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 订单
@@ -58,4 +59,8 @@ public class Orders implements Serializable {
 
     //收货人
     private String consignee;
+    
+    //订单明细列表（前端需要，非数据库字段）
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private List<OrderDetail> orderDetails;
 }

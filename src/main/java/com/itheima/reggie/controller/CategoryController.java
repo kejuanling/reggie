@@ -6,11 +6,8 @@ import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -58,18 +55,23 @@ public class CategoryController {
 
     /**
      * 菜品分类查询
-     * @param type
+     * @param category
      * @return
      */
     //一级路径Category，二级路径List,参数是表单参数Integer
+    /**
+     * 根据类型查询分类列表
+     * @param category 分类对象（包含type字段）
+     * @return 分类列表
+     */
     @GetMapping("/list")
-    public R<List<Category>> list(Integer type){
-        //查询分类
-        //1.创建查询对象
+    public R<List<Category>> list(Category category){
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-        //2.创建条件
-        queryWrapper.eq(Category::getType,type);
-        //3.执行查询
+        // 如果type不为null，则按类型过滤；否则返回所有分类
+        if (category != null && category.getType() != null) {
+            queryWrapper.eq(Category::getType, category.getType());
+        }
+        queryWrapper.orderByAsc(Category::getSort);
         List<Category> list = categoryService.list(queryWrapper);
         return R.success(list);
     }
