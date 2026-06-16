@@ -1,0 +1,245 @@
+-- PostgreSQL 版本数据库初始化脚本
+
+-- 地址管理表
+CREATE TABLE IF NOT EXISTS address_book (
+    id BIGINT NOT NULL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    consignee VARCHAR(50) NOT NULL,
+    sex SMALLINT NOT NULL,
+    phone VARCHAR(11) NOT NULL,
+    province_code VARCHAR(12),
+    province_name VARCHAR(32),
+    city_code VARCHAR(12),
+    city_name VARCHAR(32),
+    district_code VARCHAR(12),
+    district_name VARCHAR(32),
+    detail VARCHAR(200),
+    label VARCHAR(100),
+    is_default SMALLINT NOT NULL DEFAULT 0,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL,
+    is_deleted INT NOT NULL DEFAULT 0
+);
+
+-- 菜品及套餐分类表
+CREATE TABLE IF NOT EXISTS category (
+    id BIGINT NOT NULL PRIMARY KEY,
+    type INT,
+    name VARCHAR(64) NOT NULL,
+    sort INT NOT NULL DEFAULT 0,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_category_name ON category(name);
+
+-- 菜品管理表
+CREATE TABLE IF NOT EXISTS dish (
+    id BIGINT NOT NULL PRIMARY KEY,
+    name VARCHAR(64) NOT NULL,
+    category_id BIGINT NOT NULL,
+    price DECIMAL(10,2),
+    code VARCHAR(64) NOT NULL,
+    image VARCHAR(200) NOT NULL,
+    description VARCHAR(400),
+    status INT NOT NULL DEFAULT 1,
+    sort INT NOT NULL DEFAULT 0,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL,
+    is_deleted INT NOT NULL DEFAULT 0
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_dish_name ON dish(name);
+
+-- 菜品口味关系表
+CREATE TABLE IF NOT EXISTS dish_flavor (
+    id BIGINT NOT NULL PRIMARY KEY,
+    dish_id BIGINT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    value VARCHAR(500),
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL,
+    is_deleted INT NOT NULL DEFAULT 0
+);
+
+-- 员工表
+CREATE TABLE IF NOT EXISTS employee (
+    id BIGINT NOT NULL PRIMARY KEY,
+    name VARCHAR(32) NOT NULL,
+    username VARCHAR(32) NOT NULL,
+    password VARCHAR(64) NOT NULL,
+    phone VARCHAR(11),
+    sex VARCHAR(2),
+    id_number VARCHAR(18),
+    status INT NOT NULL DEFAULT 1,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_employee_username ON employee(username);
+
+-- 订单明细表
+CREATE TABLE IF NOT EXISTS order_detail (
+    id BIGINT NOT NULL PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    image VARCHAR(200),
+    dish_id BIGINT,
+    setmeal_id BIGINT,
+    dish_flavor VARCHAR(50),
+    amount DECIMAL(10,2) NOT NULL,
+    number INT NOT NULL DEFAULT 1
+);
+
+-- 订单表
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGINT NOT NULL PRIMARY KEY,
+    number VARCHAR(64) NOT NULL,
+    status INT NOT NULL DEFAULT 1,
+    user_id BIGINT NOT NULL,
+    address_book_id BIGINT NOT NULL,
+    order_time TIMESTAMP NOT NULL,
+    checkout_time TIMESTAMP,
+    pay_method INT NOT NULL DEFAULT 1,
+    amount DECIMAL(10,2) NOT NULL,
+    remark VARCHAR(100),
+    phone VARCHAR(11),
+    address VARCHAR(200),
+    user_name VARCHAR(32),
+    consignee VARCHAR(32),
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL
+);
+
+-- 套餐表
+CREATE TABLE IF NOT EXISTS setmeal (
+    id BIGINT NOT NULL PRIMARY KEY,
+    category_id BIGINT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    status INT NOT NULL DEFAULT 1,
+    description VARCHAR(400),
+    image VARCHAR(200) NOT NULL,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
+    create_user BIGINT NOT NULL,
+    update_user BIGINT NOT NULL,
+    is_deleted INT NOT NULL DEFAULT 0
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_setmeal_name ON setmeal(name);
+
+-- 套餐菜品关系表
+CREATE TABLE IF NOT EXISTS setmeal_dish (
+    id BIGINT NOT NULL PRIMARY KEY,
+    setmeal_id BIGINT NOT NULL,
+    dish_id BIGINT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    copies INT NOT NULL DEFAULT 1
+);
+
+-- 购物车表
+CREATE TABLE IF NOT EXISTS shopping_cart (
+    id BIGINT NOT NULL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    dish_id BIGINT,
+    setmeal_id BIGINT,
+    dish_flavor VARCHAR(50),
+    number INT NOT NULL DEFAULT 1,
+    amount DECIMAL(10,2) NOT NULL,
+    create_time TIMESTAMP NOT NULL
+);
+
+-- 用户表
+CREATE TABLE IF NOT EXISTS user_info (
+    id BIGINT NOT NULL PRIMARY KEY,
+    name VARCHAR(32),
+    phone VARCHAR(11) NOT NULL,
+    sex VARCHAR(2),
+    id_number VARCHAR(18),
+    avatar VARCHAR(200),
+    status INT NOT NULL DEFAULT 1,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_phone ON user_info(phone);
+
+-- 插入初始化数据
+INSERT INTO category (id, type, name, sort, create_time, update_time, create_user, update_user) VALUES 
+(1397844263642378242, 1, '湘菜', 1, '2023-02-27 09:16:58', '2023-02-15 20:25:23', 1, 1),
+(1397844303408574465, 1, '徽菜', 2, '2023-02-27 09:17:07', '2023-02-02 14:27:22', 1, 1),
+(1397844391040167938, 1, '粤菜', 3, '2023-02-27 09:17:28', '2023-02-09 14:37:13', 1, 1),
+(1413341197421846529, 1, '饮品', 11, '2023-02-09 11:36:15', '2023-02-09 14:39:15', 1, 1),
+(1413342269393674242, 2, '商务套餐', 5, '2023-02-09 11:40:30', '2023-02-09 14:43:45', 1, 1),
+(1413384954989060097, 1, '主食', 12, '2023-02-09 14:30:07', '2023-02-09 14:39:19', 1, 1),
+(1413386191767674881, 2, '儿童套餐', 6, '2023-02-09 14:35:02', '2023-02-09 14:39:05', 1, 1);
+
+-- 初始化管理员账户 (密码: 123456)
+INSERT INTO employee (id, name, username, password, phone, sex, id_number, status, create_time, update_time, create_user, update_user) VALUES
+(1, '管理员', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '13800138000', '1', '110101199001011234', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1);
+
+INSERT INTO user_info (id, name, phone, sex, id_number, avatar, status, create_time, update_time) VALUES
+(1635571534550573058, '测试用户', '13812345678', '1', '110101199001011234', '', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO address_book (id, user_id, consignee, sex, phone, detail, label, is_default, create_time, update_time, create_user, update_user, is_deleted) VALUES
+(1417414526093082626, 1635571534550573058, '小明', 1, '13812345678', '昌平区金燕龙办公楼', '公司', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1635571534550573058, 1635571534550573058, 0);
+
+INSERT INTO dish (id, name, category_id, price, code, image, description, status, sort, create_time, update_time, create_user, update_user, is_deleted) VALUES
+(1397849739276890114, '辣子鸡', 1397844263642378242, 7800.00, '222222222', 'f966a38e-1280-40be-bb52-5699d13cb3d9.jpg', '来自鲜嫩美味的小鸡，值得一尝', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397850140982161409, '毛氏红烧肉', 1397844263642378242, 6800.00, '123412341234', '0a3b3288-3446-4420-bbff-f263d0c02d8e.jpg', '毛氏红烧肉毛氏红烧肉，确定不来一份？', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397850392090947585, '组庵鱼翅', 1397844263642378242, 4800.00, '123412341234', '740c79ce-af29-41b8-b78d-5f49c96e38c4.jpg', '组庵鱼翅，看图足以表明好吃程度', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397850851245600769, '霸王别姬', 1397844263642378242, 12800.00, '123412341234', '057dd338-e487-4bbc-a74c-0384c44a9ca3.jpg', '还有什么比霸王别姬更美味的呢？', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397851099502260226, '全家福', 1397844263642378242, 11800.00, '23412341234', 'a53a4e6a-3b83-4044-87f9-9d49b30a8fdc.jpg', '别光吃肉啦，来份全家福吧，让你长寿又美味', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397851370462687234, '邵阳猪血丸子', 1397844263642378242, 13800.00, '1246812345678', '2a50628e-7758-4c51-9fbb-d37c61cdacad.jpg', '看，美味不？来嘛来嘛，这才是最爱吖', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397851668262465537, '口味蛇', 1397844263642378242, 16800.00, '1234567812345678', '0f4bd884-dc9c-4cf9-b59e-7d5958fec3dd.jpg', '爬行界的扛把子，东兴-口味蛇，让你欲罢不能', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397853183287013378, '麻辣兔头', 1397844303408574465, 19800.00, '123456787654321', '2a2e9d66-b41d-4645-87bd-95f2cfeed218.jpg', '麻辣兔头的详细制作，麻辣鲜香，色泽红润，回味悠长', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397853709101740034, '蒜泥白肉', 1397844303408574465, 9800.00, '1234321234321', 'd2f61d70-ac85-4529-9b74-6d9a2255c6d7.jpg', '多么的有食欲啊', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397853890262118402, '鱼香肉丝', 1397844303408574465, 3800.00, '1234212321234', '8dcfda14-5712-4d28-82f7-ae905b3c2308.jpg', '鱼香肉丝简直就是我们童年回忆的一道经典菜', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397854652581064706, '麻辣水煮鱼', 1397844303408574465, 14800.00, '2345312345321', '1fdbfbf3-1d86-4b29-a3fc-46345852f2f8.jpg', '鱼片是买的切好的鱼片，放几个虾，增加味道', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397854865672679425, '鱼香炒鸡蛋', 1397844303408574465, 2000.00, '2345643123456', '0f252364-a561-4e8d-8065-9a6797a6b1d3.jpg', '鱼香菜也是川味的特色。里面没有鱼却鱼香味', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397860242057375745, '脆皮烧鹅', 1397844391040167938, 12800.00, '123456786543213456', 'e476f679-5c15-436b-87fa-8c4e9644bf33.jpeg', '广东烤鸭美而香', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397860578738352129, '白切鸡', 1397844391040167938, 6600.00, '12345678654', '9ec6fc2d-50d2-422e-b954-de87dcd04198.jpeg', '白切鸡是一道色香味俱全的特色传统名肴', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397860792492666881, '烤乳猪', 1397844391040167938, 38800.00, '213456432123456', '2e96a7e3-affb-438e-b7c3-e1430df425c9.jpeg', '广式烧乳猪主料是小乳猪', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397860963880316929, '脆皮乳鸽', 1397844391040167938, 10800.00, '1234563212345', '3fabb83a-1c09-4fd9-892b-4ef7457daafa.jpeg', '脆皮乳鸽是广东菜中的一道传统名菜', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397861683434139649, '清蒸河鲜海鲜', 1397844391040167938, 38800.00, '1234567876543213456', '1405081e-f545-42e1-86a2-f7559ae2e276.jpeg', '新鲜的海鲜，清蒸是最好的处理方式', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397862198033297410, '老火靓汤', 1397844391040167938, 49800.00, '123456786532455', '583df4b7-a159-4cfc-9543-4f666120b25f.jpeg', '老火靓汤又称广府汤', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397862477831122945, '上汤焗龙虾', 1397844391040167938, 108800.00, '1234567865432', '5b8d2da3-3744-4bb3-acdc-329056b8259d.jpeg', '上汤焗龙虾是一道色香味俱全的传统名菜', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1413342036832100354, '北冰洋', 1413341197421846529, 500.00, '', 'c99e0aab-3cb7-4eaa-80fd-f47d4ffea694.png', '', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1413384757047271425, '王老吉', 1413341197421846529, 500.00, '', '00874a5e-0df2-446b-8f69-a30eb7d88ee8.png', '', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1413385247889891330, '米饭', 1413384954989060097, 200.00, '', 'ee04a05a-1230-46b6-8ad5-1a95b140fff3.png', '', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0);
+
+INSERT INTO dish_flavor (id, dish_id, name, value, create_time, update_time, create_user, update_user, is_deleted) VALUES
+(1397849739297861633, 1397849739276890114, '忌口', '["不要葱","不要蒜","不要香菜","不要辣"]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397849739323027458, 1397849739276890114, '辣度', '["不辣","微辣","中辣","重辣"]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397850141015715841, 1397850140982161409, '忌口', '["不要葱","不要蒜","不要香菜","不要辣"]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1397850141040881665, 1397850140982161409, '辣度', '["不辣","微辣","中辣","重辣"]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1413389540592263169, 1413384757047271425, '温度', '["常温","冷藏"]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1413389684020682754, 1413342036832100354, '温度', '["常温","冷藏"]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0);
+
+INSERT INTO setmeal (id, category_id, name, price, status, description, image, create_time, update_time, create_user, update_user, is_deleted) VALUES
+(1413386667965851649, 1413342269393674242, '商务豪华套餐A', 26800.00, 1, '精选商务套餐，适合宴请', '01fcbf8e-aeef-4634-bfc4-45132080430d.jpg', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0),
+(1413387156675174402, 1413386191767674881, '儿童欢乐套餐', 8800.00, 1, '营养均衡，孩子最爱', 'c35e03fc-2a48-4463-a95c-9748195d64cf.jpg', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 0);
+
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, name, price, copies) VALUES
+(1413386850366230529, 1413386667965851649, 1397850140982161409, '毛氏红烧肉', 6800.00, 1),
+(1413386850387208193, 1413386667965851649, 1397850851245600769, '霸王别姬', 12800.00, 1),
+(1413386850408185857, 1413386667965851649, 1413385247889891330, '米饭', 200.00, 2),
+(1413387254492930049, 1413387156675174402, 1397853890262118402, '鱼香肉丝', 3800.00, 1),
+(1413387254513907713, 1413387156675174402, 1413342036832100354, '北冰洋', 500.00, 1),
+(1413387254534885377, 1413387156675174402, 1413385247889891330, '米饭', 200.00, 1);
+
+COMMIT;
